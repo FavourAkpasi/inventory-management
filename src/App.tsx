@@ -1,26 +1,27 @@
 import { useContext } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import ModalInput from "./components/ModalInput";
-import Nav from "./components/Nav";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import AddNewTypeModal from "./components/AddNewTypeModal";
+import Header from "./components/Header";
 import { GlobalContext } from "./context/GlobalState";
-import Details from "./pages/Details";
 import Home from "./pages/Home";
+import AddNewMachineModal from "./components/AddNewMachineModal";
+import Details from "./pages/Details";
 
-function App() {
-  const { showModal } = useContext(GlobalContext);
+const App = () => {
+  const { showTypeModal, showMachineModal } = useContext(GlobalContext);
 
   return (
-    <>
-      <Router>
-        <Nav />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/:typeId" element={<Details />} />
-        </Routes>
-        {showModal && <ModalInput />}
-      </Router>
-    </>
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/:machineTypeId" element={<Details />} />
+      </Routes>
+
+      {showTypeModal && <AddNewTypeModal />}
+      {showMachineModal && <AddNewMachineModal />}
+    </Router>
   );
-}
+};
 
 export default App;

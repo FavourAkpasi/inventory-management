@@ -1,67 +1,43 @@
 import React, { createContext, useState } from "react";
-import { useAppSelector } from "../app/hooks";
-import { MachineType } from "../types/machineType";
+import { MachineType } from "../types/types";
+import { useAppSelector } from "./../app/hooks";
 
 type ProviderProps = {
   children: React.ReactNode;
 };
 
 type ContextType = {
+  showTypeModal: boolean;
+  showMachineModal: boolean;
   machineTypes: MachineType[];
   currentMachineType: MachineType | null;
-  showModal: boolean;
-  addingType: boolean;
-  handleShowModal: () => void;
-  handleAddType: () => void;
-  handleAddMachine: (
-    e: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>,
-    id: number
-  ) => void;
+  setShowTypeModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowMachineModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setCurrentMachineType: React.Dispatch<
+    React.SetStateAction<MachineType | null>
+  >;
 };
 
-// Create context
 export const GlobalContext = createContext<ContextType>({} as ContextType);
 
 export const GlobalProvider = ({ children }: ProviderProps) => {
-  const { machineTypes } = useAppSelector((state) => state.machineType);
-  const [showModal, setShowModal] = useState(false);
-  const [addingType, setAddingType] = useState(false);
+  const { machineTypes } = useAppSelector((state) => state.persistedReducer);
+  const [showTypeModal, setShowTypeModal] = useState(false);
+  const [showMachineModal, setShowMachineModal] = useState(false);
   const [currentMachineType, setCurrentMachineType] =
     useState<MachineType | null>(null);
 
-  const handleShowModal = () => {
-    setShowModal(!showModal);
-  };
-
-  const handleAddType = () => {
-    setAddingType(true);
-    handleShowModal();
-  };
-
-  const handleAddMachine = (
-    e: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>,
-    id: number
-  ) => {
-    e.stopPropagation();
-    const machineType = machineTypes.find((item) => item.id === id);
-
-    if (machineType) {
-      setAddingType(false);
-      setCurrentMachineType(machineType);
-      handleShowModal();
-    }
-  };
-
+  // pass the states and functions down to the components that need them.
   return (
     <GlobalContext.Provider
       value={{
-        machineTypes,
-        showModal,
-        addingType,
+        showTypeModal,
+        showMachineModal,
         currentMachineType,
-        handleShowModal,
-        handleAddType,
-        handleAddMachine,
+        setShowMachineModal,
+        setShowTypeModal,
+        machineTypes,
+        setCurrentMachineType,
       }}
     >
       {children}

@@ -1,55 +1,52 @@
-import { Delete } from "@mui/icons-material";
-import SettingsIcon from "@mui/icons-material/Settings";
-import styled from "styled-components";
-import { useContext } from "react";
-import { GlobalContext } from "../context/GlobalState";
+import { MouseEvent, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
-const Type = styled.div`
-  width: 10rem;
-  height: auto;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-`;
-const Number = styled.h1`
-  font-weight: bold;
-`;
-const Name = styled.h3`
-  font-weight: bold;
-`;
-const Manage = styled.div`
-  display: flex;
-`;
+import { useAppDispatch } from "../app/hooks";
+import { removeMachineType } from "../features/machineSlice";
+import { Box, Button, Container } from "../styles/styles";
+import { MachineType } from "../types/types";
+import { GlobalContext } from "./../context/GlobalState";
 
 const Home = () => {
-  const { machineTypes, handleAddMachine } = useContext(GlobalContext);
-
+  const { machineTypes } = useContext(GlobalContext);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const handleNavigate = (e: React.MouseEvent<HTMLDivElement>, id: number) => {
+  const removeType = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    item: MachineType
+  ) => {
     e.stopPropagation();
-
-    navigate(`/${id}`);
+    dispatch(removeMachineType(item));
   };
 
   return (
-    <>
+    <Container gap="10px">
       {machineTypes.map((item) => (
-        <Type key={item.id} onClick={(e) => handleNavigate(e, item.id)}>
-          <Number>{item.machines.length}</Number>
-          <Name>{item.title}</Name>
-
-          <Manage>
-            <Delete />
-            <SettingsIcon />
-            <button onClick={(e) => handleAddMachine(e, item.id)}>+</button>
-          </Manage>
-        </Type>
+        <Box flex card key={item.id} onClick={() => navigate(`${item.id}`)}>
+          <h4>Type: {item.name}</h4>
+          <p>
+            <b>Id:</b> {item.id}
+          </p>
+          <p>
+            <b>{item.name}s:</b>
+            {item.machines.reduce(
+              (a, value) => (a = a + Number(value.quantity)),
+              0
+            )}
+          </p>
+          <Button
+            p=".5rem 0"
+            bg="#444444"
+            color="#fff"
+            onClick={(e: MouseEvent<HTMLButtonElement, MouseEvent>) =>
+              removeType(e, item)
+            }
+          >
+            Delete
+          </Button>
+        </Box>
       ))}
-    </>
+    </Container>
   );
 };
 
