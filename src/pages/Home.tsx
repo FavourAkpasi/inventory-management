@@ -2,9 +2,39 @@ import { MouseEvent, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../app/hooks";
 import { removeMachineType } from "../features/machineSlice";
-import { Box, Button, Container } from "../styles/styles";
+import { Button } from "../styles/styles";
 import { MachineType } from "../types/types";
 import { GlobalContext } from "./../context/GlobalState";
+import styled from "styled-components";
+
+const Container = styled.div<any>`
+  max-width: 1440px;
+  width: 100vw;
+  padding: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+  gap: 1rem;
+`;
+
+const Box = styled.div<any>`
+  width: 30%;
+  height: auto;
+  background: #f7f7f7;
+  padding: 1rem;
+  border: 2px solid #000;
+  transition: all 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.05);
+  }
+  @media (max-width: 768px) {
+    width: 45%;
+  }
+`;
 
 const Home = () => {
   const { machineTypes } = useContext(GlobalContext);
@@ -20,7 +50,7 @@ const Home = () => {
   };
 
   return (
-    <Container gap="10px">
+    <Container>
       {machineTypes.map((item) => (
         <Box flex card key={item.id} onClick={() => navigate(`${item.id}`)}>
           <h4>Type: {item.name}</h4>

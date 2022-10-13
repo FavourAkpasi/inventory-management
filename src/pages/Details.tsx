@@ -43,7 +43,7 @@ const Details = () => {
   return (
     <div>
       <Nav bg="#000">
-        <Container Ycenter Xbetween style={{ padding: "1rem 6rem" }}>
+        <Container Ycenter Xbetween style={{ padding: "1rem 5%" }}>
           <Button
             p=".5rem 1rem"
             radius="rounded"
@@ -51,9 +51,9 @@ const Details = () => {
           >
             Add new {machineType?.name}
           </Button>
-          <h2 style={{ color: "#fff" }}>{machineType?.name}</h2>
+          {/* <h2 style={{ color: "#fff" }}>{machineType?.name}</h2> */}
           <h3 style={{ color: "#fff" }}>
-            Total Machines:{" "}
+            {machineType?.name}s:
             {machineType?.machines.reduce(
               (a, value) => (a = a + Number(value.quantity)),
               0
@@ -61,7 +61,7 @@ const Details = () => {
           </h3>
         </Container>
       </Nav>
-      <Container gap="10px">
+      <Container gap="10px" flex="wrap">
         {machines?.map((item) => (
           <Box key={item.id} card flex>
             <h4>Model: {item.name}</h4>

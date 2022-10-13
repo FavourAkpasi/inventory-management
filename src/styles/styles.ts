@@ -6,16 +6,6 @@ export const Nav = styled.nav<any>`
   background: ${(props) => props.bg};
 `;
 
-export const Logo = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 20px;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-`;
-
 export const Container = styled.div<any>`
   max-width: 1300px;
   width: 100%;
@@ -40,6 +30,7 @@ export const Container = styled.div<any>`
       : ""};
   margin: auto;
   gap: ${(props) => props.gap};
+  flex-wrap: ${(props) => props.flex};
 `;
 
 export const Form = styled.form<any>`
